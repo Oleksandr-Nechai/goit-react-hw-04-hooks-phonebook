@@ -1,38 +1,25 @@
-import { useState } from "react";
-import styles from "./ContactForm.module.css";
-import PropTypes from "prop-types";
+import { useState } from 'react';
+import styles from './ContactForm.module.css';
+import PropTypes from 'prop-types';
 
-const ContactForm = (props) => {
-  const [name, setName] = useState("");
-  const [number, setNumber] = useState("");
+const initialState = {
+  name: '',
+  number: '',
+};
+const ContactForm = props => {
+  const [data, setData] = useState(initialState);
 
-  const onHandleChange = (e) => {
-    const { name, value } = e.target;
-    switch (name) {
-      case "name":
-        setName(value);
-        break;
-      case "number":
-        setNumber(value);
-        break;
-      default:
-        return;
-    }
-  };
-
-  const contact = {
-    name,
-    number,
-  };
-  const onHandleSubmit = (e) => {
+  const onHandleSubmit = e => {
     e.preventDefault();
-    props.onSubmitContact({ ...contact });
-    reset();
+    props.onSubmitContact(data);
+    setData(initialState);
   };
-  const reset = () => {
-    setName("");
-    setNumber("");
+  const onHandleChange = ({ target }) => {
+    const { name, value } = target;
+    setData({ ...data, [name]: value });
   };
+
+  const { name, number } = data;
 
   return (
     <form onSubmit={onHandleSubmit} className={styles.form}>
